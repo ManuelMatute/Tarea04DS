@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TicketEnVivo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicketEnVivo</a> &gt; <a href="index.source.html" class="el_package">clases</a> &gt; <span class="el_source">TicketEnVivo.java</span></div><h1>TicketEnVivo.java</h1><pre class="source lang-java linenums">package clases;
+
+import comportamental.EventNotifier;
+import creacional.EventFactory;
+import creacional.TheatreEventFactory;
+
+import estructural.TicketDecorator;
+
+import java.util.List;
+
+<span class="nc" id="L11">public class TicketEnVivo {</span>
+    public static void main(String[] args) {
+<span class="nc" id="L13">        EventFactory eventFactory = new TheatreEventFactory();</span>
+<span class="nc" id="L14">        Event event = eventFactory.createEvent();</span>
+<span class="nc" id="L15">        System.out.println(&quot;Evento creado: &quot; + event.getEventDetails());</span>
+
+<span class="nc" id="L17">        Show show = new Show();</span>
+<span class="nc" id="L18">        event.addShow(show);</span>
+
+<span class="nc" id="L20">        Selection platea = new Selection();</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L22">            platea.addSeat(new Seat());</span>
+        }
+<span class="nc" id="L24">        show.addSection(platea);</span>
+
+<span class="nc" id="L26">        Customer customer = new Customer(&quot;cliente@email.com&quot;);</span>
+<span class="nc" id="L27">        EventNotifier eventNotifier = new EventNotifier();</span>
+<span class="nc" id="L28">        eventNotifier.addObserver(customer);</span>
+
+<span class="nc" id="L30">        List&lt;Seat&gt; selectedSeats = platea.getAvailableSeats().subList(0, 2);</span>
+
+<span class="nc" id="L32">        ReservationService reservationService = new ReservationService();</span>
+<span class="nc" id="L33">        Reservation reservation = reservationService.reserveSeats(customer, selectedSeats);</span>
+
+<span class="nc" id="L35">        double bebidaPrice = 20.0;</span>
+<span class="nc" id="L36">        double parkingPrice = 10.0;</span>
+
+<span class="nc" id="L38">        PricePolicy pricePolicy = r -&gt; r.getSeats().size() * 100.0;</span>
+
+<span class="nc" id="L40">        PaymentProcessor paymentProcessor = amount -&gt; {</span>
+<span class="nc" id="L41">            System.out.println(&quot;Procesando pago por $&quot; + amount + &quot;...&quot;);</span>
+<span class="nc" id="L42">            return new PaymentResult(true);</span>
+        };
+
+<span class="nc" id="L45">        RefundStrategy refundStrategy = new StandardRefundStrategy();</span>
+
+        
+<span class="nc" id="L48">        TicketService ticketService = new TicketService(paymentProcessor, pricePolicy, refundStrategy);</span>
+<span class="nc" id="L49">        Ticket baseTicket = ticketService.purchase(reservation);</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (baseTicket != null) {</span>
+<span class="nc" id="L52">            TicketInterface decoratedTicket = new ExtrasDecorator(baseTicket, bebidaPrice, parkingPrice);</span>
+
+
+<span class="nc" id="L55">            System.out.println(&quot;\n--- Ticket Final ---&quot;);</span>
+<span class="nc" id="L56">            System.out.println(decoratedTicket.getETicket());</span>
+<span class="nc" id="L57">            System.out.println(&quot;Precio total: $&quot; + decoratedTicket.getPrice());</span>
+
+<span class="nc" id="L59">            eventNotifier.notifyObservers(event.getType().toString(),</span>
+                    &quot;Su compra ha sido confirmada. Detalles en su email.&quot;);
+
+<span class="nc" id="L62">            SupportTicket supportTicket = new SupportTicket(IssueType.PAYMENT, customer);</span>
+<span class="nc" id="L63">            System.out.println(&quot;\nEstado inicial del ticket de soporte: &quot; + supportTicket.getStatus());</span>
+<span class="nc" id="L64">            supportTicket.escalate();</span>
+<span class="nc" id="L65">            System.out.println(&quot;Estado después de escalar: &quot; + supportTicket.getStatus());</span>
+<span class="nc" id="L66">            supportTicket.close();</span>
+<span class="nc" id="L67">            System.out.println(&quot;Estado final: &quot; + supportTicket.getStatus());</span>
+
+            // 14) Reembolso (Strategy)
+<span class="nc" id="L70">            System.out.println(&quot;\nIntentando reembolso...&quot;);</span>
+<span class="nc" id="L71">            boolean refundResult = ticketService.refund(baseTicket); // reembolso sobre el ticket base</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            System.out.println(&quot;Resultado del reembolso: &quot; + (refundResult ? &quot;Éxito&quot; : &quot;Fallido&quot;));</span>
+<span class="nc" id="L73">        } else {</span>
+<span class="nc" id="L74">            System.out.println(&quot;Error en la compra. No se generó ticket.&quot;);</span>
+        }
+<span class="nc" id="L76">    }</span>
+
+
+    static class ExtrasDecorator extends TicketDecorator {
+        private final double bebidaPrice;
+        private final double parkingPrice;
+
+        public ExtrasDecorator(TicketInterface decoratedTicket, double bebidaPrice, double parkingPrice) {
+<span class="nc" id="L84">            super(decoratedTicket);</span>
+<span class="nc" id="L85">            this.bebidaPrice = bebidaPrice;</span>
+<span class="nc" id="L86">            this.parkingPrice = parkingPrice;</span>
+<span class="nc" id="L87">        }</span>
+
+        @Override
+        public double getPrice() {
+<span class="nc" id="L91">            return super.getPrice() + bebidaPrice + parkingPrice;</span>
+        }
+
+        @Override
+        public String getETicket() {
+<span class="nc" id="L96">            return super.getETicket()</span>
+                    + &quot;\nIncluye: Bebida (+$&quot; + bebidaPrice + &quot;)&quot;
+                    + &quot;\nIncluye: Estacionamiento (+$&quot; + parkingPrice + &quot;)&quot;;
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

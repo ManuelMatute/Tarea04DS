@@ -4,6 +4,7 @@
  */
 package comportamental;
 
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,18 +37,7 @@ public class EventNotifierTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of addObserver method, of class EventNotifier.
-     */
-    @Test
-    public void testAddObserver() {
-        System.out.println("addObserver");
-        EventObserver observer = null;
-        EventNotifier instance = new EventNotifier();
-        instance.addObserver(observer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    
 
     static class CapturingObserver implements EventObserver {
     String last;
@@ -62,5 +52,18 @@ public class EventNotifierTest {
     n.notifyObservers("EVENTO", "Mensaje");
     assertEquals("EVENTO|Mensaje", obs.last);
   }
-    
+  
+  
+  @Test
+  void addObserver_andNotify_invokesObserver() {
+    EventNotifier n = new EventNotifier();
+    AtomicReference<String> ref = new AtomicReference<>(null);
+
+    EventObserver obs = (event, message) -> ref.set(event + "|" + message);
+    n.addObserver(obs);
+
+    n.notifyObservers("E", "M");
+    assertEquals("E|M", ref.get());
+  }
+  
 }

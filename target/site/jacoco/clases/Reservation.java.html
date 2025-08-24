@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Reservation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicketEnVivo</a> &gt; <a href="index.source.html" class="el_package">clases</a> &gt; <span class="el_source">Reservation.java</span></div><h1>Reservation.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package clases;
+
+/**
+ *
+ * @author Manue
+ */
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L14">public class Reservation {</span>
+<span class="fc" id="L15">    private List&lt;Seat&gt; seats = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L16">    private List&lt;Option&gt; options = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L17">    private boolean confirmed = false;</span>
+
+    
+    
+    // NUEVO: Método que encapsula la lógica de reservar múltiples asientos
+    public void reserveSeats(List&lt;Seat&gt; seatsToReserve) {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (Seat seat : seatsToReserve) {</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">            if (!seat.isAvailable()) {</span>
+<span class="nc" id="L25">                throw new IllegalStateException(&quot;Asiento no disponible&quot;);</span>
+            }
+<span class="fc" id="L27">            addSeat(seat);</span>
+<span class="fc" id="L28">        }</span>
+<span class="fc" id="L29">    }</span>
+    
+    
+    // MEJORADO: Más expresivo sobre lo que hace
+    public void addSeat(Seat seat) {
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (seats.contains(seat)) {</span>
+<span class="nc" id="L35">            throw new IllegalArgumentException(&quot;Asiento ya está reservado&quot;);</span>
+        }
+<span class="fc" id="L37">        seats.add(seat);</span>
+<span class="fc" id="L38">        seat.reserve();</span>
+<span class="fc" id="L39">    }</span>
+    // NUEVO: Método más expresivo para cancelación completa
+        public void cancelAndReleaseAllSeats() {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            for (Seat seat : seats) {</span>
+<span class="fc" id="L43">                seat.release();</span>
+<span class="fc" id="L44">            }</span>
+<span class="fc" id="L45">            seats.clear();</span>
+<span class="fc" id="L46">            confirmed = false;</span>
+<span class="fc" id="L47">        }</span>
+    public void removeSeat(Seat seat) {
+<span class="fc" id="L49">        seats.remove(seat);</span>
+<span class="fc" id="L50">        seat.release();</span>
+<span class="fc" id="L51">    }</span>
+
+    public void confirm() {
+<span class="fc" id="L54">        confirmed = true;</span>
+<span class="fc" id="L55">    }</span>
+
+    
+
+    public void addOption(Option option) {
+<span class="fc" id="L60">        options.add(option);</span>
+<span class="fc" id="L61">    }</span>
+
+    public List&lt;Seat&gt; getSeats() {
+<span class="fc" id="L64">        return seats;</span>
+    }
+
+    public List&lt;Option&gt; getOptions() {
+<span class="fc" id="L68">        return options;</span>
+    }
+
+    public boolean isConfirmed() {
+<span class="fc" id="L72">        return confirmed;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

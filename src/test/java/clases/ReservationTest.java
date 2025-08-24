@@ -90,7 +90,7 @@ public class ReservationTest {
         r.confirm();
         assertTrue(r.isConfirmed(), "Tras confirm(), la reserva debe estar confirmada");
 
-        r.cancel();
+        r.cancelAndReleaseAllSeats();
 
         assertAll("Efectos de cancel()",
             () -> assertFalse(r.isConfirmed(), "La reserva debe quedar NO confirmada"),
@@ -104,16 +104,16 @@ public class ReservationTest {
     void addOption_storesExtras() {
         System.out.println("Agregando opciones a la reserva (Bebida, Parqueo)");
         Reservation r = new Reservation();
-        Option bebida = new Option("Bebida", 5.0);
-        Option parqueo = new Option("Parqueo", 10.0);
+        Option bebida = new Option("Bebida", new Money(20.0));
+        Option parking = new Option("Estacionamiento", new Money(10.0));
 
         r.addOption(bebida);
-        r.addOption(parqueo);
+        r.addOption(parking);
 
         assertAll("Verificar opciones agregadas",
             () -> assertEquals(2, r.getOptions().size(), "Deben existir 2 opciones en la reserva"),
             () -> assertTrue(r.getOptions().contains(bebida), "La lista debe contener 'Bebida'"),
-            () -> assertTrue(r.getOptions().contains(parqueo), "La lista debe contener 'Parqueo'")
+            () -> assertTrue(r.getOptions().contains(parking), "La lista debe contener 'Parqueo'")
         );
     }
 
@@ -124,8 +124,8 @@ public class ReservationTest {
         Reservation r = new Reservation();
         Seat s = new Seat();
         r.addSeat(s);                 
-        r.cancel();              
-        r.cancel();              
+        r.cancelAndReleaseAllSeats();              
+                      
 
         assertAll("Estado tras cancel() repetido",
             () -> assertTrue(s.isAvailable(), "El asiento debe permanecer disponible"),

@@ -5,6 +5,7 @@
 package clases;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -83,19 +84,11 @@ public class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("reserveSeats() con lista vacía: crea Reservation sin asientos y la asocia al Customer")
-    void reserveSeats_withEmptyList_returnsEmptyReservation() {
-        System.out.println("Reservando con lista vacia de asientos para validar caso borde");
-        ReservationService svc = new ReservationService();
-        Customer c = new Customer("edge@case.com");
-
-        Reservation res = svc.reserveSeats(c, Arrays.asList());
-
-        assertAll("Verificar creación y vinculo con el cliente en caso borde",
-            () -> assertNotNull(res, "La reserva debe crearse aun sin asientos"),
-            () -> assertTrue(res.getSeats().isEmpty(), "La reserva debe quedar sin asientos"),
-            () -> assertTrue(c.getReservations().contains(res), "El cliente debe contener la reserva creada")
-        );
-    }
+  void reserveSeats_withEmptyList_throwsIAE() {
+    ReservationService svc = new ReservationService();
+    Customer customer = new Customer("x@y.com");
+    assertThrows(IllegalArgumentException.class,
+        () -> svc.reserveSeats(customer, Collections.emptyList()));
+  }
     
 }

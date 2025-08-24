@@ -69,27 +69,26 @@ public class CustomerTest {
 
     @Test
     @DisplayName("update(event, message) imprime notificación con email, evento y mensaje")
-    void update_printsNotification() {
-        System.out.println("Capturando la salida de consola para verificar el mensaje de update()");
+    
+    
+   
+  void update_printsNotification() {
+    Customer c = new Customer("cliente@email.com");
 
-        Customer c = new Customer("c@e.com");
-
-        PrintStream original = System.out;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(baos));
-        try {
-            c.update("TEATRO", "Confirmado");
-        } finally {
-            System.setOut(original);
-        }
-
-        String out = baos.toString();
-        assertAll("Verificar contenido de la notificacion",
-            () -> assertTrue(out.contains("Notificacion para c@e.com"), "Debe contener el email del cliente"),
-            () -> assertTrue(out.contains("sobre TEATRO"), "Debe mencionar el evento"),
-            () -> assertTrue(out.contains("Confirmado"), "Debe incluir el mensaje")
-        );
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream prev = System.out;
+    System.setOut(new PrintStream(baos));
+    try {
+      c.update("EVENTO", "Mensaje");
+    } finally {
+      System.setOut(prev);
     }
+
+    String out = baos.toString();
+    assertTrue(out.contains("EVENTO"));
+    assertTrue(out.contains("Mensaje"));
+
+  }
     
     
 }

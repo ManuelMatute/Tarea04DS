@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Money.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicketEnVivo</a> &gt; <a href="index.source.html" class="el_package">clases</a> &gt; <span class="el_source">Money.java</span></div><h1>Money.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package clases;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.Objects;
+
+public class Money {
+    private final BigDecimal amount;
+    private final Currency currency;
+
+<span class="fc" id="L15">    public Money(double amount) {</span>
+<span class="fc" id="L16">        this.amount = BigDecimal.valueOf(amount);</span>
+<span class="fc" id="L17">        this.currency = Currency.getInstance(&quot;USD&quot;);</span>
+<span class="fc" id="L18">    }</span>
+
+<span class="nc" id="L20">    public Money(double amount, Currency currency) {</span>
+<span class="nc" id="L21">        this.amount = BigDecimal.valueOf(amount);</span>
+<span class="nc" id="L22">        this.currency = currency;</span>
+<span class="nc" id="L23">    }</span>
+
+    public BigDecimal getAmount() {
+<span class="nc" id="L26">        return amount;</span>
+    }
+
+    public Currency getCurrency() {
+<span class="nc" id="L30">        return currency;</span>
+    }
+
+    // Operaciones
+    public Money add(Money other) {
+<span class="nc" id="L35">        checkCurrency(other);</span>
+<span class="nc" id="L36">        return new Money(this.amount.add(other.amount).doubleValue(), this.currency);</span>
+    }
+
+    public Money subtract(Money other) {
+<span class="nc" id="L40">        checkCurrency(other);</span>
+<span class="nc" id="L41">        return new Money(this.amount.subtract(other.amount).doubleValue(), this.currency);</span>
+    }
+
+    public Money multiply(double factor) {
+<span class="nc" id="L45">        return new Money(this.amount.multiply(BigDecimal.valueOf(factor)).doubleValue(), this.currency);</span>
+    }
+
+    private void checkCurrency(Money other) {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (!this.currency.equals(other.currency)) {</span>
+<span class="nc" id="L50">            throw new IllegalArgumentException(&quot;Different currencies not supported&quot;);</span>
+        }
+<span class="nc" id="L52">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L56">        return amount + &quot; &quot; + currency.getCurrencyCode();</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (!(o instanceof Money)) return false;</span>
+<span class="nc" id="L63">        Money money = (Money) o;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        return amount.compareTo(money.amount) == 0 &amp;&amp;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">               Objects.equals(currency, money.currency);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L70">        return Objects.hash(amount, currency);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

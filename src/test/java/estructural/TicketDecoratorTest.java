@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import clases.Ticket;
+import clases.Reservation;
+
 
 /**
  *
@@ -38,12 +41,12 @@ public class TicketDecoratorTest {
     }
 
     @Test
-  void beverage_addsPriceAndText() {
-    Ticket base = new Ticket(new Reservation(), 20);
-    BeverageDecorator deco = new BeverageDecorator(base, 5);
+void beverage_addsPriceAndText() {
+    Ticket base = new Ticket(new Reservation(), 20.0); 
+    BeverageDecorator deco = new BeverageDecorator(base, 5.0); 
     assertEquals(25.0, deco.getPrice());
     assertTrue(deco.getETicket().contains("Bebida (+$5"));
-  }
+}
 
   @Test
   void beverage_nullDecorated_throwsIAE() {

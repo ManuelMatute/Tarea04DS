@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SupportTicket.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicketEnVivo</a> &gt; <a href="index.source.html" class="el_package">clases</a> &gt; <span class="el_source">SupportTicket.java</span></div><h1>SupportTicket.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package clases;
+
+/**
+ *
+ * @author Manue
+ */
+import java.time.LocalDateTime;
+
+public class SupportTicket {
+    private IssueType issueType;
+    private TicketState state;
+    private LocalDateTime createdAt;
+    private Customer customer;
+
+<span class="fc" id="L19">    public SupportTicket(IssueType issueType, Customer customer) {</span>
+<span class="fc" id="L20">        this.issueType = issueType;</span>
+<span class="fc" id="L21">        this.customer = customer;</span>
+<span class="fc" id="L22">        this.state = new OpenState();</span>
+<span class="fc" id="L23">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L24">    }</span>
+
+     public void escalate() {
+<span class="fc" id="L27">        this.state = new EscalatedState();</span>
+<span class="fc" id="L28">        this.state.handle(this);</span>
+<span class="fc" id="L29">    }</span>
+
+
+
+    public void close() {
+<span class="fc" id="L34">        this.state = new ClosedState();</span>
+<span class="fc" id="L35">        this.state.handle(this);</span>
+<span class="fc" id="L36">    }</span>
+
+
+    public IssueType getIssueType() {
+<span class="fc" id="L40">        return issueType;</span>
+    }
+
+    public TicketStatus getStatus() {
+<span class="fc" id="L44">        return state.getStatus();</span>
+    }
+
+
+    public LocalDateTime getCreatedAt() {
+<span class="fc" id="L49">        return createdAt;</span>
+    }
+
+    public Customer getCustomer() {
+<span class="fc" id="L53">        return customer;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

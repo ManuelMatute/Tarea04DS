@@ -1,9 +1,9 @@
 clases\PaymentProcessor.class
 clases\PriceService.class
 clases\Selection.class
-clases\ParkingDecorator.class
 clases\IssueType.class
 clases\PricePolicy.class
+clases\TicketEnVivo$ExtrasDecorator.class
 clases\ReservationTimer.class
 clases\Show.class
 creacional\TheatreEventFactory.class
@@ -13,11 +13,13 @@ clases\Reservation.class
 clases\TicketEnVivo.class
 clases\ReservationService.class
 clases\TicketState.class
+clases\TicketInterface.class
 clases\Option.class
 com\mycompany\mavenproject1\Mavenproject1.class
 comportamental\EventObserver.class
 clases\NotificationService.class
 clases\NoRefundStrategy.class
+clases\Money.class
 clases\StandardRefundStrategy.class
 clases\Event.class
 clases\Seat.class
