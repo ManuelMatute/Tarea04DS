@@ -1,4 +1,4 @@
-
+package estructural;
 import clases.Reservation;
 import clases.TicketInterface;
 

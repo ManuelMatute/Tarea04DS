@@ -75,4 +75,12 @@ public class ShowTest {
             () -> assertNull(s.getSections().get(0), "El elemento agregado es null (comportamiento actual)")
         );
     }
+
+    @Test
+  void addSection_andList() {
+    Show show = new Show();
+    show.addSection(new Selection());
+    show.addSection(new Selection());
+    assertEquals(2, show.getSections().size());
+  }
 }
