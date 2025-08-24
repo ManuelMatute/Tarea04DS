@@ -3,26 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package estructural;
-import clases.Ticket;
-/**
- *
- * @author Joseph
- */
-public class BeverageDecorator extends TicketDecorator {
-    private double beveragePrice;
-    
-    public BeverageDecorator(Ticket decoratedTicket, double beveragePrice) {
-        super(decoratedTicket);
-        this.beveragePrice = beveragePrice;
-    }
-    
-    @Override
-    public double getPrice() {
-        return super.getPrice() + beveragePrice;
-    }
-    
-    @Override
-    public String getETicket() {
-        return super.getETicket() + "\nIncluye: Bebida (+$" + beveragePrice + ")";
+
+import clases.TicketInterface;
+
+public class BeverageDecorator extends SurchargeDecorator {
+    public BeverageDecorator(TicketInterface decoratedTicket, double beveragePrice) {
+        super(decoratedTicket, "Bebida", beveragePrice);
     }
 }

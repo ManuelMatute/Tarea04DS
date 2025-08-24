@@ -4,68 +4,70 @@
  */
 package clases;
 
-/**
- *
- * @author Manue
- */
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Reservation {
-    private List<Seat> seats = new ArrayList<>();
-    private List<Option> options = new ArrayList<>();
+
+    private final List<Seat> seats = new ArrayList<>();
+    private final List<Option> options = new ArrayList<>();
     private boolean confirmed = false;
 
-    
-    
-    // NUEVO: Método que encapsula la lógica de reservar múltiples asientos
+   
     public void reserveSeats(List<Seat> seatsToReserve) {
+        if (seatsToReserve == null || seatsToReserve.isEmpty()) {
+            throw new IllegalArgumentException("La lista de asientos no puede estar vacía o ser null");
+        }
         for (Seat seat : seatsToReserve) {
-            if (!seat.isAvailable()) {
-                throw new IllegalStateException("Asiento no disponible");
-            }
-            addSeat(seat);
+            if (seat == null) throw new IllegalArgumentException("La lista contiene asientos null");
+            if (!seat.isAvailable()) throw new IllegalStateException("Asiento no disponible");
+            if (seats.contains(seat)) throw new IllegalArgumentException("Asiento ya está reservado");
+        }
+        for (Seat seat : seatsToReserve) {
+            seats.add(seat);
+            seat.reserve();
         }
     }
-    
-    
-    // MEJORADO: Más expresivo sobre lo que hace
+
     public void addSeat(Seat seat) {
-        if (seats.contains(seat)) {
-            throw new IllegalArgumentException("Asiento ya está reservado");
-        }
+        if (seat == null) throw new IllegalArgumentException("seat no puede ser null");
+        if (!seat.isAvailable()) throw new IllegalStateException("Asiento no disponible");
+        if (seats.contains(seat)) throw new IllegalArgumentException("Asiento ya está reservado");
         seats.add(seat);
         seat.reserve();
     }
-    // NUEVO: Método más expresivo para cancelación completa
-        public void cancelAndReleaseAllSeats() {
-            for (Seat seat : seats) {
-                seat.release();
-            }
-            seats.clear();
-            confirmed = false;
-        }
+
     public void removeSeat(Seat seat) {
-        seats.remove(seat);
-        seat.release();
+        if (seat == null) return;
+        if (seats.remove(seat)) {
+            seat.release();
+        }
     }
 
-    public void confirm() {
-        confirmed = true;
+    public void cancelAndReleaseAllSeats() {
+        for (Seat seat : seats) {
+            seat.release();
+        }
+        seats.clear();
+        confirmed = false;
     }
-
-    
 
     public void addOption(Option option) {
+        if (option == null) throw new IllegalArgumentException("option no puede ser null");
         options.add(option);
     }
 
     public List<Seat> getSeats() {
-        return seats;
+        return Collections.unmodifiableList(seats);
     }
 
     public List<Option> getOptions() {
-        return options;
+        return Collections.unmodifiableList(options);
+    }
+
+    public void confirm() {
+        confirmed = true;
     }
 
     public boolean isConfirmed() {

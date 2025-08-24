@@ -32,10 +32,10 @@ public class TicketEnVivo {
         ReservationService reservationService = new ReservationService();
         Reservation reservation = reservationService.reserveSeats(customer, selectedSeats);
 
-        double bebidaPrice = 20.0;
-        double parkingPrice = 10.0;
+        double bebidaPrice = PriceConstants.DEFAULT_BEVERAGE_PRICE;
+        double parkingPrice = PriceConstants.DEFAULT_PARKING_PRICE;
 
-        PricePolicy pricePolicy = r -> r.getSeats().size() * 100.0;
+        PricePolicy pricePolicy = r -> r.getSeats().size() * PriceConstants.BASE_PRICE_PER_SEAT;
 
         PaymentProcessor paymentProcessor = amount -> {
             System.out.println("Procesando pago por $" + amount + "...");
